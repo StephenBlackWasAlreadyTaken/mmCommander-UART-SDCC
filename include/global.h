@@ -67,8 +67,8 @@ extern __xdata u32 clock;
 #else
     #define SLEEPTIMER  1100
     #define PLATFORM_CLOCK_FREQ 24
-void usbIntHandler(void) interrupt P2INT_VECTOR;
-void p0IntHandler(void) interrupt P0INT_VECTOR;
+void usbIntHandler(void) __interrupt P2INT_VECTOR;
+void p0IntHandler(void) __interrupt P0INT_VECTOR;
 
     #if defined DONSDONGLES
         // CC1111 USB Dongle with breakout debugging pins (EMK?) - 24mhz
