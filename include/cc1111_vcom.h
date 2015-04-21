@@ -21,9 +21,6 @@
 #ifndef _USB_H_
 #define _USB_H_
 
-#include "cc1111.h"
-#include "types.h"
-
 // External interface
 
 void initUSB();
@@ -36,14 +33,15 @@ void vcom_flush();
 
 void vcom_putstr(char* buff);
 void vcom(char* buff);
-//void vcom_up();
-//void vcom_down();
-void usb_up(void);
-void usb_down(void);
+void vcom_up();
+void vcom_down();
 
 void txdata(u8 app, u8 cmd, u16 len, __xdata u8* dataptr);
 
 // End external interface
+
+// USB interrupt handler
+void vcom_isr() __interrupt 6;
 
 #define USB_SETUP_DIR_MASK    (0x01 << 7)
 #define USB_SETUP_TYPE_MASK   (0x03 << 5)
@@ -80,7 +78,7 @@ void txdata(u8 app, u8 cmd, u16 len, __xdata u8* dataptr);
 //#define USB_DESC_STRING           3
 //#define USB_DESC_INTERFACE        4
 //#define USB_DESC_ENDPOINT         5
-//#define USB_DESC_DEVICE_QUALIFIER 6
+#define USB_DESC_DEVICE_QUALIFIER 6
 #define USB_DESC_OTHER_SPEED      7
 #define USB_DESC_INTERFACE_POWER  8
 
