@@ -1007,7 +1007,7 @@
                                    1007 ;	-----------------------------------------
                                    1008 ;	 function debugEP0Req
                                    1009 ;	-----------------------------------------
-      0019B9                       1010 _debugEP0Req:
+      0019C4                       1010 _debugEP0Req:
                            000007  1011 	ar7 = 0x07
                            000006  1012 	ar6 = 0x06
                            000005  1013 	ar5 = 0x05
@@ -1017,7 +1017,7 @@
                            000001  1017 	ar1 = 0x01
                            000000  1018 	ar0 = 0x00
                                    1019 ;	cc1111usbdebug.c:9: (void) pReq;
-      0019B9 22               [24] 1020 	ret
+      0019C4 22               [24] 1020 	ret
                                    1021 ;------------------------------------------------------------
                                    1022 ;Allocation info for local variables in function 'debug'
                                    1023 ;------------------------------------------------------------
@@ -1029,39 +1029,39 @@
                                    1029 ;	-----------------------------------------
                                    1030 ;	 function debug
                                    1031 ;	-----------------------------------------
-      0019BA                       1032 _debug:
-      0019BA AE 82            [24] 1033 	mov	r6,dpl
-      0019BC AF 83            [24] 1034 	mov	r7,dph
+      0019C5                       1032 _debug:
+      0019C5 AE 82            [24] 1033 	mov	r6,dpl
+      0019C7 AF 83            [24] 1034 	mov	r7,dph
                                    1035 ;	cc1111usbdebug.c:27: while (*ptr++ != 0)
-      0019BE 7C 00            [12] 1036 	mov	r4,#0x00
-      0019C0 7D 00            [12] 1037 	mov	r5,#0x00
-      0019C2 8E 02            [24] 1038 	mov	ar2,r6
-      0019C4 8F 03            [24] 1039 	mov	ar3,r7
-      0019C6                       1040 00101$:
-      0019C6 8A 82            [24] 1041 	mov	dpl,r2
-      0019C8 8B 83            [24] 1042 	mov	dph,r3
-      0019CA E4               [12] 1043 	clr	a
-      0019CB 93               [24] 1044 	movc	a,@a+dptr
-      0019CC F9               [12] 1045 	mov	r1,a
-      0019CD A3               [24] 1046 	inc	dptr
-      0019CE AA 82            [24] 1047 	mov	r2,dpl
-      0019D0 AB 83            [24] 1048 	mov	r3,dph
-      0019D2 E9               [12] 1049 	mov	a,r1
-      0019D3 60 07            [24] 1050 	jz	00103$
+      0019C9 7C 00            [12] 1036 	mov	r4,#0x00
+      0019CB 7D 00            [12] 1037 	mov	r5,#0x00
+      0019CD 8E 02            [24] 1038 	mov	ar2,r6
+      0019CF 8F 03            [24] 1039 	mov	ar3,r7
+      0019D1                       1040 00101$:
+      0019D1 8A 82            [24] 1041 	mov	dpl,r2
+      0019D3 8B 83            [24] 1042 	mov	dph,r3
+      0019D5 E4               [12] 1043 	clr	a
+      0019D6 93               [24] 1044 	movc	a,@a+dptr
+      0019D7 F9               [12] 1045 	mov	r1,a
+      0019D8 A3               [24] 1046 	inc	dptr
+      0019D9 AA 82            [24] 1047 	mov	r2,dpl
+      0019DB AB 83            [24] 1048 	mov	r3,dph
+      0019DD E9               [12] 1049 	mov	a,r1
+      0019DE 60 07            [24] 1050 	jz	00103$
                                    1051 ;	cc1111usbdebug.c:28: len ++;
-      0019D5 0C               [12] 1052 	inc	r4
-      0019D6 BC 00 ED         [24] 1053 	cjne	r4,#0x00,00101$
-      0019D9 0D               [12] 1054 	inc	r5
-      0019DA 80 EA            [24] 1055 	sjmp	00101$
-      0019DC                       1056 00103$:
+      0019E0 0C               [12] 1052 	inc	r4
+      0019E1 BC 00 ED         [24] 1053 	cjne	r4,#0x00,00101$
+      0019E4 0D               [12] 1054 	inc	r5
+      0019E5 80 EA            [24] 1055 	sjmp	00101$
+      0019E7                       1056 00103$:
                                    1057 ;	cc1111usbdebug.c:29: txdata(0xfe, 0xf0, len, (__xdata u8*)text);
-      0019DC 8E 2F            [24] 1058 	mov	_txdata_PARM_4,r6
-      0019DE 8F 30            [24] 1059 	mov	(_txdata_PARM_4 + 1),r7
-      0019E0 75 2C F0         [24] 1060 	mov	_txdata_PARM_2,#0xF0
-      0019E3 8C 2D            [24] 1061 	mov	_txdata_PARM_3,r4
-      0019E5 8D 2E            [24] 1062 	mov	(_txdata_PARM_3 + 1),r5
-      0019E7 75 82 FE         [24] 1063 	mov	dpl,#0xFE
-      0019EA 02 0B 01         [24] 1064 	ljmp	_txdata
+      0019E7 8E 2F            [24] 1058 	mov	_txdata_PARM_4,r6
+      0019E9 8F 30            [24] 1059 	mov	(_txdata_PARM_4 + 1),r7
+      0019EB 75 2C F0         [24] 1060 	mov	_txdata_PARM_2,#0xF0
+      0019EE 8C 2D            [24] 1061 	mov	_txdata_PARM_3,r4
+      0019F0 8D 2E            [24] 1062 	mov	(_txdata_PARM_3 + 1),r5
+      0019F2 75 82 FE         [24] 1063 	mov	dpl,#0xFE
+      0019F5 02 0B 0C         [24] 1064 	ljmp	_txdata
                                    1065 	.area CSEG    (CODE)
                                    1066 	.area CONST   (CODE)
                                    1067 	.area XINIT   (CODE)

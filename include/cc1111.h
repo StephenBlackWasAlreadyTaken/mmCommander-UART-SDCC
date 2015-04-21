@@ -11,6 +11,7 @@
 #define uint16 unsigned int
 #define uint32 unsigned int
 #define xdata __xdata
+#define interrupt __interrupt
 
 //uint8 addr;               // temporarily store the incoming address until *after* the STATUS stage of the transaction... then assign the address.
 
