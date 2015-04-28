@@ -1,10 +1,10 @@
 /******************************************************************************
-    Filename: ioCCxx10_bitdef.h
+Filename: ioCCxx10_bitdef.h
 
-    This file contains the bit definitions of registers in CCxx10
+This file contains the bit definitions of registers in CCxx10
 
-    Copyright 2008 Texas Instruments, Inc.
-******************************************************************************/
+Copyright 2008 Texas Instruments, Inc.
+ ******************************************************************************/
 #ifndef _IOCCXX10_BITDEF_H
 #define _IOCCXX10_BITDEF_H
 
@@ -1279,11 +1279,11 @@
 #define MARC_STATE_TX_UNDERFLOW           0x16
 
 // 0xDF3C Packetstatus register
-#define PKTSTATUS_SFD					0x08
-#define PKTSTATUS_CCA					0x10
-#define PKTSTATUS_PQTREACHED			0x20
-#define PKTSTATUS_CS					0x40
-#define PKTSTATUS_CRCOK					0x80
+#define PKTSTATUS_SFD                   0x08
+#define PKTSTATUS_CCA                   0x10
+#define PKTSTATUS_PQTREACHED            0x20
+#define PKTSTATUS_CS                    0x40
+#define PKTSTATUS_CRCOK                 0x80
 
 /***********************************************************************/
 #endif

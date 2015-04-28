@@ -47,7 +47,7 @@ void txdataold(u8 app, u8 cmd, u16 len, u8* dataptr)      // assumed EP5 for app
     USBINDEX=5;
     //EA=0; 
     while (len>0)
-     {
+    {
         // if we do this in the loop, for some reason ep5iobuf.flags never clears between frames.  
         // don't know why since this bit is cleared in the USB ISR.
         loop = TXDATA_MAX_WAIT;
@@ -61,7 +61,7 @@ void txdataold(u8 app, u8 cmd, u16 len, u8* dataptr)      // assumed EP5 for app
             //loop--;
         }
         //blink(100,50);
-            
+
         if (firsttime==1){                                             // first time through only please
             //blink(100,50);
 
@@ -91,7 +91,7 @@ void txdataold(u8 app, u8 cmd, u16 len, u8* dataptr)      // assumed EP5 for app
         {
             USBF5 = *dataptr++;
         }
-        
+
         USBCSIL |= USBCSIL_INPKT_RDY;
         ep5iobuf.flags |= EP_INBUF_WRITTEN;                         // set the 'written' flag
     }
@@ -107,7 +107,7 @@ void txdata(u8 app, u8 cmd, u16 len, __xdata u8* dataptr)      // assumed EP5 fo
     USBINDEX=5;
     //EA=0; 
     while (len>0)
-     {
+    {
         // if we do this in the loop, for some reason ep5iobuf.flags never clears between frames.  
         // don't know why since this bit is cleared in the USB ISR.
         loop = TXDATA_MAX_WAIT;
@@ -121,7 +121,7 @@ void txdata(u8 app, u8 cmd, u16 len, __xdata u8* dataptr)      // assumed EP5 fo
             loop--;
         }
         //blink(100,50);
-            
+
         if (firsttime==1){                                             // first time through only please
             //blink(100,50);
 
@@ -160,7 +160,7 @@ void txdata(u8 app, u8 cmd, u16 len, __xdata u8* dataptr)      // assumed EP5 fo
 
         while (!(DMAIRQ & DMAARM1));
         DMAIRQ &= ~DMAARM1;             // FIXME: superfuous?
-        
+
         USBCSIL |= USBCSIL_INPKT_RDY;
         ep5iobuf.flags |= EP_INBUF_WRITTEN;                         // set the 'written' flag
     }
@@ -244,7 +244,7 @@ void usb_init(void)
     ep5iobuf.BUFmaxlen  =  EP5OUT_MAX_PACKET_SIZE;
 
 
-   
+
     // setup Interrupt Flag MASKs... we want all interrupts at the moment.  change to your liking)
     USBCIE = 0xf7;          // skip Start Of Frame (SOFIF).  it's basically a keep-alive packet to keep the device from entering SUSPEND.  
     USBIIE = 0xff;
@@ -331,18 +331,18 @@ int setup_sendx_ep0(__xdata u8* payload, u16 length)
 }
 
 /*  unused????
-int setup_send_ep5(u8* payload, u16 length)
-{
+    int setup_send_ep5(u8* payload, u16 length)
+    {
     if (ep5iobuf.epstatus != EP_STATE_IDLE)
-        return -1;
+    return -1;
 
     ep5iobuf.INbuf = payload;
     ep5iobuf.INbytesleft = length;
     ep5iobuf.epstatus = EP_STATE_TX;
-    
+
     return 0;
-}
-*/
+    }
+    */
 
 void usb_arm_ep0IN(){
     /***********************
@@ -352,7 +352,7 @@ void usb_arm_ep0IN(){
     u8  csReg = USBCS0_INPKT_RDY;
 
     USBINDEX = 0;
-    
+
     if (ep0iobuf.INbytesleft > EP0_MAX_PACKET_SIZE)
         tlen = EP0_MAX_PACKET_SIZE;
     else
@@ -405,65 +405,65 @@ u16 usb_recv_ep0OUT(){
         payload++;
     }
     //////////////////////////////////////////////////////////////////////////////////////////
-    
+
     if (ep0iobuf.OUTlen < EP0_MAX_PACKET_SIZE)
         appHandleEP0OUTdone();
     return ep0iobuf.OUTlen;
-    
+
 }
 
-    /**********************************         NEVER USED..... deprecating.
-u16 usb_recv_ep5OUT(){
-     * handle receipt of one packet and set flags
-     * if another packet has yet to be handled by the application (ie. received through this function but not acted upon or cleared), return -1
-    //u16 loop;
+/**********************************         NEVER USED..... deprecating.
+  u16 usb_recv_ep5OUT(){
+ * handle receipt of one packet and set flags
+ * if another packet has yet to be handled by the application (ie. received through this function but not acted upon or cleared), return -1
+//u16 loop;
 
-    u8* payload = &ep5iobuf.OUTbuf[0];
+u8* payload = &ep5iobuf.OUTbuf[0];
 
-    USBINDEX = 5;
-    ep5iobuf.OUTlen = (USBCNTH<<8) + USBCNTL;
+USBINDEX = 5;
+ep5iobuf.OUTlen = (USBCNTH<<8) + USBCNTL;
 
-    if (ep5iobuf.flags & EP_OUTBUF_WRITTEN)
-    {
-        USBCSOL |= USBCSOL_SEND_STALL;
-        ep5iobuf.epstatus = EP_STATE_STALL;
-        return -1;
-    }
-    ep5iobuf.flags |= EP_OUTBUF_WRITTEN;            // hey, we've written here, don't write again until this is cleared by a application handler
+if (ep5iobuf.flags & EP_OUTBUF_WRITTEN)
+{
+USBCSOL |= USBCSOL_SEND_STALL;
+ep5iobuf.epstatus = EP_STATE_STALL;
+return -1;
+}
+ep5iobuf.flags |= EP_OUTBUF_WRITTEN;            // hey, we've written here, don't write again until this is cleared by a application handler
 
-    if (ep5iobuf.OUTlen>ep5iobuf.BUFmaxlen)
-        ep5iobuf.OUTlen = ep5iobuf.BUFmaxlen;
+if (ep5iobuf.OUTlen>ep5iobuf.BUFmaxlen)
+ep5iobuf.OUTlen = ep5iobuf.BUFmaxlen;
 
-    ///////////////////////////////  FIXME: USE DMA //////////////////////////////////////////
-    //for (loop=ep5iobuf.OUTlen; loop>0; loop--){
-    //    *payload++ = USBF5;
-    //}
-    //////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////  FIXME: USE DMA //////////////////////////////////////////
+//for (loop=ep5iobuf.OUTlen; loop>0; loop--){
+//    *payload++ = USBF5;
+//}
+//////////////////////////////////////////////////////////////////////////////////////////
 
-    while ((DMAIRQ & DMAARM1))
-        blink(20,20);
-    DMAARM |= 0x80 + DMAARM1;
-    usbdma.srcAddrH = 0xde;     //USBF5 == 0xde2a
-    usbdma.srcAddrL = 0x2a;
-    usbdma.destAddrH = ((u16)payload)>>8;
-    usbdma.destAddrL = ((u16)payload)&0xff;
-    usbdma.lenL = ep5iobuf.OUTlen;
-    usbdma.lenH = 0;
-    usbdma.srcInc = 0;
-    usbdma.destInc = 1;
-    DMAARM |= DMAARM1;
-    DMAREQ |= DMAARM1;
+while ((DMAIRQ & DMAARM1))
+blink(20,20);
+DMAARM |= 0x80 + DMAARM1;
+usbdma.srcAddrH = 0xde;     //USBF5 == 0xde2a
+usbdma.srcAddrL = 0x2a;
+usbdma.destAddrH = ((u16)payload)>>8;
+usbdma.destAddrL = ((u16)payload)&0xff;
+usbdma.lenL = ep5iobuf.OUTlen;
+usbdma.lenH = 0;
+usbdma.srcInc = 0;
+usbdma.destInc = 1;
+DMAARM |= DMAARM1;
+DMAREQ |= DMAARM1;
 
-    while (!(DMAIRQ & DMAARM1));
-    DMAIRQ &= ~DMAARM1;             // FIXME: superfuous?
-        
-    USBCSOL &= 0xfe;
-    
-    return ep5iobuf.OUTlen;
-    
+while (!(DMAIRQ & DMAARM1));
+DMAIRQ &= ~DMAARM1;             // FIXME: superfuous?
+
+USBCSOL &= 0xfe;
+
+return ep5iobuf.OUTlen;
+
 }
 
-     */
+*/
 
 
 /*************************************************************************************************
@@ -513,25 +513,25 @@ void usbGetDescriptor(USB_Setup_Header* pReq)
     u16 length;
 
     switch ((pReq->wValue)>>8){
-        case USB_DESC_DEVICE:
-            buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, 0);
-            length = (u8)*(buffer);
-            break;
-        case USB_DESC_CONFIG:
-            buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
-            length = (u16)*(buffer+2);
-            if ((pReq->wValue>>8) != *(buffer+1))
-                while (1)   //blink(100,100);                               ///////// DEBUGGING!  WILL STOP EXECUTION!
-                    blink_binary_baby_lsb((pReq->wValue), 16); 
-            break;
-        case USB_DESC_STRING:
-            buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
-            length = (u8)*(buffer);
-            break;
-        default:
-            buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
-            length = (u8)*(buffer);
-            break;
+    case USB_DESC_DEVICE:
+        buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, 0);
+        length = (u8)*(buffer);
+        break;
+    case USB_DESC_CONFIG:
+        buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
+        length = (u16)*(buffer+2);
+        if ((pReq->wValue>>8) != *(buffer+1))
+            while (1)   //blink(100,100);                               ///////// DEBUGGING!  WILL STOP EXECUTION!
+                blink_binary_baby_lsb((pReq->wValue), 16); 
+        break;
+    case USB_DESC_STRING:
+        buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
+        length = (u8)*(buffer);
+        break;
+    default:
+        buffer = usbGetDescriptorPrimitive((pReq->wValue)>>8, (pReq->wValue)&0xff);
+        length = (u8)*(buffer);
+        break;
     }
     if (length > pReq->wLength)
         length = pReq->wLength;
@@ -541,7 +541,7 @@ void usbGetDescriptor(USB_Setup_Header* pReq)
         REALLYFASTBLINK();
         appstatus |= 1;                                         //  hack to trigger "waitForUSBsetup()"
     }
-    
+
 }
 
 
@@ -585,7 +585,7 @@ void handleCS0(void)
         ep0iobuf.epstatus = EP_STATE_IDLE;
         blink(200,200);
     }
-    
+
     if (ep0iobuf.epstatus == EP_STATE_STALL)
     {
         blink(500,500);
@@ -613,122 +613,122 @@ void handleCS0(void)
             {   
                 switch(req.bmRequestType & USB_BM_REQTYPE_TYPEMASK)
                 {
-                    case USB_BM_REQTYPE_TYPE_STD:               //  STANDARD type
+                case USB_BM_REQTYPE_TYPE_STD:               //  STANDARD type
 
-                        loop = req.bmRequestType & USB_BM_REQTYPE_TGTMASK;
-                        if (loop == USB_BM_REQTYPE_TGT_DEV)
-                        {
-                            switch (req.bRequest){
-                                // return wLength bytes of Device/Config/Interface/EP info (wValue information)
-                                case USB_GET_DESCRIPTOR:
-                                    usbGetDescriptor(&req);
-                                    break;
-                                case USB_GET_CONFIGURATION: 
-                                    usbGetConfiguration(); 
-                                    break;
-                                // send back 0x0000 for GET_STATUS (not self-powered and not remote-wake-up capable.
-                                case USB_GET_STATUS:
-                                    val = 0;
-                                    setup_send_ep0((u8*)&val, 2);
-                                    break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        }
-                        // Interface Requests
-                        else if (loop == USB_BM_REQTYPE_TGT_INTF)
-                        {
-                            switch (req.bRequest){
-                                case USB_GET_STATUS:        break;
-                                case USB_GET_INTERFACE:     break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        }
-                        // EndPoint Requests
-                        else if (loop == USB_BM_REQTYPE_TGT_EP)
-                        {
-                            switch (req.bRequest){
-                                case USB_GET_STATUS:
-                                    setup_send_ep0("\x00\x00", 2);
-                                    break;
-                                case USB_SYNCH_FRAME:
-                                    break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        } else {
+                    loop = req.bmRequestType & USB_BM_REQTYPE_TGTMASK;
+                    if (loop == USB_BM_REQTYPE_TGT_DEV)
+                    {
+                        switch (req.bRequest){
+                            // return wLength bytes of Device/Config/Interface/EP info (wValue information)
+                        case USB_GET_DESCRIPTOR:
+                            usbGetDescriptor(&req);
+                            break;
+                        case USB_GET_CONFIGURATION: 
+                            usbGetConfiguration(); 
+                            break;
+                            // send back 0x0000 for GET_STATUS (not self-powered and not remote-wake-up capable.
+                        case USB_GET_STATUS:
+                            val = 0;
+                            setup_send_ep0((u8*)&val, 2);
+                            break;
+                        default:
                             debugEP0Req((u8*)&req);
-                            USBCS0 |= USBCS0_SEND_STALL;
                         }
-                        break;
-                    case USB_BM_REQTYPE_TYPE_CLASS:             // CLASS type
-                        break;
-                    case USB_BM_REQTYPE_TYPE_VENDOR:            // VENDOR type
-                        appHandleEP0(&req);
-                        break;
-                    case USB_BM_REQTYPE_TYPE_RESERVED:          // RESERVED
-                        USBCS0 |= USBCS0_SEND_STALL;
+                    }
+                    // Interface Requests
+                    else if (loop == USB_BM_REQTYPE_TGT_INTF)
+                    {
+                        switch (req.bRequest){
+                        case USB_GET_STATUS:        break;
+                        case USB_GET_INTERFACE:     break;
+                        default:
+                                                    debugEP0Req((u8*)&req);
+                        }
+                    }
+                    // EndPoint Requests
+                    else if (loop == USB_BM_REQTYPE_TGT_EP)
+                    {
+                        switch (req.bRequest){
+                        case USB_GET_STATUS:
+                            setup_send_ep0("\x00\x00", 2);
+                            break;
+                        case USB_SYNCH_FRAME:
+                            break;
+                        default:
+                            debugEP0Req((u8*)&req);
+                        }
+                    } else {
                         debugEP0Req((u8*)&req);
+                        USBCS0 |= USBCS0_SEND_STALL;
+                    }
+                    break;
+                case USB_BM_REQTYPE_TYPE_CLASS:             // CLASS type
+                    break;
+                case USB_BM_REQTYPE_TYPE_VENDOR:            // VENDOR type
+                    appHandleEP0(&req);
+                    break;
+                case USB_BM_REQTYPE_TYPE_RESERVED:          // RESERVED
+                    USBCS0 |= USBCS0_SEND_STALL;
+                    debugEP0Req((u8*)&req);
                 }
             } else {                                            // should be *receiving* data, if any
                 switch(req.bmRequestType & USB_BM_REQTYPE_TYPEMASK)
                 {
-                    case USB_BM_REQTYPE_TYPE_STD:               // STANDARD type
-                        loop = req.bmRequestType & USB_BM_REQTYPE_TGTMASK;
-                        if (loop == USB_BM_REQTYPE_TGT_DEV)
-                        {
-                            switch (req.bRequest){
-                                case USB_SET_ADDRESS:
-                                    USBADDR = req.wValue;
-                                    break;
-                                case USB_SET_CONFIGURATION:
-                                    usbSetConfiguration(&req);
-                                    break;
-                                // return wLength bytes of Device/Config/Interface/EP info (wValue information)
-                                case USB_CLEAR_FEATURE:
-                                    break;
-                                case USB_SET_FEATURE:
-                                    break;
-                                case USB_SET_DESCRIPTOR:
-                                    break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        }
-                        // Interface Requests
-                        else if (loop == USB_BM_REQTYPE_TGT_INTF)
-                        {
-                            switch (req.bRequest){
-                                case USB_CLEAR_FEATURE:     break;
-                                case USB_SET_FEATURE:       break;
-                                case USB_SET_INTERFACE:     break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        }
-                        // EndPoint Requests
-                        else if (loop == USB_BM_REQTYPE_TGT_EP)
-                        {
-                            switch (req.bRequest){
-                                case USB_CLEAR_FEATURE:     break;
-                                case USB_SET_FEATURE:       break;
-                                default:
-                                    debugEP0Req((u8*)&req);
-                            }
-                        } else {
-                            USBCS0 |= USBCS0_SEND_STALL;
+                case USB_BM_REQTYPE_TYPE_STD:               // STANDARD type
+                    loop = req.bmRequestType & USB_BM_REQTYPE_TGTMASK;
+                    if (loop == USB_BM_REQTYPE_TGT_DEV)
+                    {
+                        switch (req.bRequest){
+                        case USB_SET_ADDRESS:
+                            USBADDR = req.wValue;
+                            break;
+                        case USB_SET_CONFIGURATION:
+                            usbSetConfiguration(&req);
+                            break;
+                            // return wLength bytes of Device/Config/Interface/EP info (wValue information)
+                        case USB_CLEAR_FEATURE:
+                            break;
+                        case USB_SET_FEATURE:
+                            break;
+                        case USB_SET_DESCRIPTOR:
+                            break;
+                        default:
                             debugEP0Req((u8*)&req);
                         }
-                        break;
-                    case USB_BM_REQTYPE_TYPE_CLASS:             // CLASS type
-                        break;
-                    case USB_BM_REQTYPE_TYPE_VENDOR:            // VENDOR type
-                        appHandleEP0(&req);
-                        break;
-                    case USB_BM_REQTYPE_TYPE_RESERVED:          // RESERVED type
-                        debugEP0Req((u8*)&req);
+                    }
+                    // Interface Requests
+                    else if (loop == USB_BM_REQTYPE_TGT_INTF)
+                    {
+                        switch (req.bRequest){
+                        case USB_CLEAR_FEATURE:     break;
+                        case USB_SET_FEATURE:       break;
+                        case USB_SET_INTERFACE:     break;
+                        default:
+                                                    debugEP0Req((u8*)&req);
+                        }
+                    }
+                    // EndPoint Requests
+                    else if (loop == USB_BM_REQTYPE_TGT_EP)
+                    {
+                        switch (req.bRequest){
+                        case USB_CLEAR_FEATURE:     break;
+                        case USB_SET_FEATURE:       break;
+                        default:
+                                                    debugEP0Req((u8*)&req);
+                        }
+                    } else {
                         USBCS0 |= USBCS0_SEND_STALL;
+                        debugEP0Req((u8*)&req);
+                    }
+                    break;
+                case USB_BM_REQTYPE_TYPE_CLASS:             // CLASS type
+                    break;
+                case USB_BM_REQTYPE_TYPE_VENDOR:            // VENDOR type
+                    appHandleEP0(&req);
+                    break;
+                case USB_BM_REQTYPE_TYPE_RESERVED:          // RESERVED type
+                    debugEP0Req((u8*)&req);
+                    USBCS0 |= USBCS0_SEND_STALL;
                 }
 
             }       // else *receive*
@@ -739,7 +739,7 @@ void handleCS0(void)
         }       // USBCS0_OUTPKT_RDY
     }       // EP_STATE_IDLE
 
-    
+
     if (ep0iobuf.epstatus == EP_STATE_TX)
     {
         usb_arm_ep0IN(); 
@@ -748,7 +748,7 @@ void handleCS0(void)
     {
         usb_recv_ep0OUT();
     }
-    
+
 }
 
 void handleOUTEP5(void)
@@ -817,69 +817,69 @@ void handleOUTEP5(void)
         len =  (u16)*ptr++;
         len += (u16)*ptr++ << 8;
         //ptr += 2;                                               // point at the address in memory
-        
+
         if (app == 0xff)                                        // system application
         {
-			#pragma disable_warning 110
+#pragma disable_warning 110
             switch (cmd)
             {
-                case CMD_PEEK:
-                    len =  *ptr++;
-                    len += *ptr++ << 8;
-                    loop =  (u16)*ptr++;                                    // just using loop for our immediate purpose.  sorry.
-                    loop += (u16)*ptr++ << 8;                               // hack, but it works
-                    dptr = (__xdata u8*) loop;
-                    txdata(app, cmd, len, dptr);
-                    //REALLYFASTBLINK();
+            case CMD_PEEK:
+                len =  *ptr++;
+                len += *ptr++ << 8;
+                loop =  (u16)*ptr++;                                    // just using loop for our immediate purpose.  sorry.
+                loop += (u16)*ptr++ << 8;                               // hack, but it works
+                dptr = (__xdata u8*) loop;
+                txdata(app, cmd, len, dptr);
+                //REALLYFASTBLINK();
 
-                    break;
-                case CMD_POKE:
-                    loop =  *ptr++;
-                    loop += *ptr++ << 8;                                    // just using loop for our immediate purpose.  sorry.
-                    dptr = (__xdata u8*) loop;                                // hack, but it works
-                    // FIXME: do we want to DMA here?
-                    for (loop=2;loop<len;loop++)
-                    {
-                        *dptr++ = *ptr++;
-                    }
-                    txdata(app, cmd, 1, (__xdata u8*)"0");
+                break;
+            case CMD_POKE:
+                loop =  *ptr++;
+                loop += *ptr++ << 8;                                    // just using loop for our immediate purpose.  sorry.
+                dptr = (__xdata u8*) loop;                                // hack, but it works
+                // FIXME: do we want to DMA here?
+                for (loop=2;loop<len;loop++)
+                {
+                    *dptr++ = *ptr++;
+                }
+                txdata(app, cmd, 1, (__xdata u8*)"0");
 
-                    break;
-                case CMD_POKE_REG:
-                    loop =  *ptr++;
-                    loop += *ptr++ << 8;                                    // just using loop for our immediate purpose.  sorry.
-                    dptr = (__xdata u8*) loop;                                // hack, but it works
-                    for (loop=2;loop<len;loop++)
-                    {
-                        *dptr = *ptr++;
-                    }
-                    txdata(app, cmd, 1, (__xdata u8*)"");
+                break;
+            case CMD_POKE_REG:
+                loop =  *ptr++;
+                loop += *ptr++ << 8;                                    // just using loop for our immediate purpose.  sorry.
+                dptr = (__xdata u8*) loop;                                // hack, but it works
+                for (loop=2;loop<len;loop++)
+                {
+                    *dptr = *ptr++;
+                }
+                txdata(app, cmd, 1, (__xdata u8*)"");
 
+                break;
+            case CMD_PING:
+                txdata(app,cmd,len,ptr);
+                //REALLYFASTBLINK();
+                break;
+            case CMD_STATUS:
+                txdata(app, cmd, 13, (__xdata u8*)"UNIMPLEMENTED");
+                // unimplemented
+                break;
+            case CMD_RFMODE:
+#pragma disable_warning 110
+                switch (*ptr++)
+                {
+                case RF_STATE_RX:
+                    RxOn(); 
                     break;
-                case CMD_PING:
-                    txdata(app,cmd,len,ptr);
-                    //REALLYFASTBLINK();
+                case RF_STATE_IDLE:
+                    setRFIdle();  
                     break;
-                case CMD_STATUS:
-                    txdata(app, cmd, 13, (__xdata u8*)"UNIMPLEMENTED");
-                    // unimplemented
+                case RF_STATE_TX:
+                    transmit(ptr, len, 0);  
                     break;
-                case CMD_RFMODE:
-					#pragma disable_warning 110
-                    switch (*ptr++)
-                    {
-                        case RF_STATE_RX:
-                            RxOn(); 
-                            break;
-                        case RF_STATE_IDLE:
-                            setRFIdle();  
-                            break;
-                        case RF_STATE_TX:
-                            transmit(ptr, len, 0);  
-                            break;
-                    }
-                default:
-                    txdata(app,cmd,len,ptr);
+                }
+            default:
+                txdata(app,cmd,len,ptr);
             }
             ep5iobuf.flags &= ~EP_OUTBUF_WRITTEN; 
         }
@@ -909,7 +909,7 @@ void usbProcessEvents(void)
         usb_data.event &= 0xfe7;
 
     } 
-    
+
     // handle Suspend signals
     if (usb_data.event & USBD_CIF_SUSPEND) {
         usb_data.usbstatus = USB_STATE_SUSPEND;
@@ -930,55 +930,55 @@ void usbProcessEvents(void)
         USBPOW &= ~USBPOW_RESUME;
 
         usb_data.usbstatus = USB_STATE_IDLE;
-    }
+}
 
 
-    // usb_data.event accumulates the event flags.  *as they are handled, make sure you clear them!*
+// usb_data.event accumulates the event flags.  *as they are handled, make sure you clear them!*
 
-    if (usb_data.event & USBD_CIF_RESET || usb_data.usbstatus == USB_STATE_RESET)                // handle RESET
-    { //      catching either the CIF_RESET or the USB_STATE_RESET... should normalize.. probably catching the same stuff.
-        usb_init();
-        lastCode[0] = 11;
-        usb_data.event &= ~USBD_CIF_RESET;
-    } 
+if (usb_data.event & USBD_CIF_RESET || usb_data.usbstatus == USB_STATE_RESET)                // handle RESET
+{ //      catching either the CIF_RESET or the USB_STATE_RESET... should normalize.. probably catching the same stuff.
+    usb_init();
+    lastCode[0] = 11;
+    usb_data.event &= ~USBD_CIF_RESET;
+} 
 
-    if (usb_data.event & (USBD_OIF_OUTEP5IF))
+if (usb_data.event & (USBD_OIF_OUTEP5IF))
+{
+    lastCode[0] = 12;
+    if (ep5iobuf.epstatus == EP_STATE_STALL)                        // gotta clear this somewhere...
     {
-        lastCode[0] = 12;
-        if (ep5iobuf.epstatus == EP_STATE_STALL)                        // gotta clear this somewhere...
-        {
-            //blink(200,200);
-            lastCode[1] = 8;
-            ep5iobuf.epstatus = EP_STATE_IDLE;
-            USBINDEX=5;
-            USBCSOL &= 0x9f;                                            // clear both command (SEND_STALL) and status (SENT_STALL)
-        }
-        handleOUTEP5();
-        usb_data.event &= ~USBD_OIF_OUTEP5IF;
-        
+        //blink(200,200);
+        lastCode[1] = 8;
+        ep5iobuf.epstatus = EP_STATE_IDLE;
+        USBINDEX=5;
+        USBCSOL &= 0x9f;                                            // clear both command (SEND_STALL) and status (SENT_STALL)
     }
+    handleOUTEP5();
+    usb_data.event &= ~USBD_OIF_OUTEP5IF;
 
-    //if (usb_data.event & (USBD_IIF_INEP5IF))
-    //{ 
-    //    handleINEP5();
-    //    usb_data.event &= ~USBD_IIF_INEP5IF;
-    //}
+}
 
-    if (usb_data.event & ~(USBD_IIF_INEP5IF|USBD_OIF_OUTEP5IF|USBD_IIF_EP0IF|USBD_CIF_RESET|
-                USBD_CIF_RESUME|USBD_CIF_SUSPEND|USBD_CIF_SOFIF))
-    {
-        lastCode[1] = 9;
-        blink_binary_baby_lsb(usb_data.event, 16);
-        usb_data.event &= ~(USBD_IIF_INEP5IF|USBD_OIF_OUTEP5IF|USBD_IIF_EP0IF|USBD_CIF_RESET|
-                USBD_CIF_RESUME|USBD_CIF_SUSPEND|USBD_CIF_SOFIF);
-    }
+//if (usb_data.event & (USBD_IIF_INEP5IF))
+//{ 
+//    handleINEP5();
+//    usb_data.event &= ~USBD_IIF_INEP5IF;
+//}
 
-    if (usb_data.usbstatus == USB_STATE_BLINK)
-    {
-        REALLYFASTBLINK();
-        usb_data.usbstatus = USB_STATE_IDLE;
+if (usb_data.event & ~(USBD_IIF_INEP5IF|USBD_OIF_OUTEP5IF|USBD_IIF_EP0IF|USBD_CIF_RESET|
+    USBD_CIF_RESUME|USBD_CIF_SUSPEND|USBD_CIF_SOFIF))
+{
+    lastCode[1] = 9;
+    blink_binary_baby_lsb(usb_data.event, 16);
+    usb_data.event &= ~(USBD_IIF_INEP5IF|USBD_OIF_OUTEP5IF|USBD_IIF_EP0IF|USBD_CIF_RESET|
+        USBD_CIF_RESUME|USBD_CIF_SUSPEND|USBD_CIF_SOFIF);
+}
 
-    }
+if (usb_data.usbstatus == USB_STATE_BLINK)
+{
+    REALLYFASTBLINK();
+    usb_data.usbstatus = USB_STATE_IDLE;
+
+}
 
 }
 
@@ -993,12 +993,12 @@ void usbIntHandler(void) __interrupt P2INT_VECTOR
     EA=0;
 
     //usb_data.usbstatus = USB_STATE_BLINK;
- 
+
     // Set event flags for interpretation by main loop.  Since these registers are cleared upon read, we OR with the existing flags
     usb_data.event |= USBCIF;
     usb_data.event |= (USBIIF << 4);
     usb_data.event |= (USBOIF << 9);
- 
+
     // process events that are fast and not part of the main loop
     //processFastEvents();
     if (usb_data.event & (USBD_IIF_INEP5IF))
@@ -1006,7 +1006,7 @@ void usbIntHandler(void) __interrupt P2INT_VECTOR
         ep5iobuf.flags &= ~EP_INBUF_WRITTEN;
         usb_data.event &= ~USBD_IIF_INEP5IF;
     }
- 
+
     // Clear the P2 interrupt flag
     USB_INT_CLEAR();                                // P2IFG= 0; P2IF= 0;
     EA=1;
@@ -1023,119 +1023,119 @@ void p0IntHandler(void) __interrupt P0INT_VECTOR  // P0_7's interrupt is used as
 
     SLEEP &= ~0x3;                                  // clear the PM mode bits
     USB_RESUME_INT_CLEAR();
-    
+
     EA=1;
 }
 
 // setup Config Descriptor  (see cc1111.h for defaults and fields to change)
 // all numbers are lsb.  modify this for your own use.
 void USBDESCBEGIN(void){
-__asm
-0001$:    ; Device descriptor
-               .DB 0002$ - 0001$     ; bLength 
-               .DB USB_DESC_DEVICE   ; bDescriptorType
-               .DB 0x00, 0x02        ; bcdUSB
-               .DB 0x02              ; bDeviceClass i
-               .DB 0x00              ; bDeviceSubClass
-               .DB 0x00              ; bDeviceProtocol
-               .DB EP0_MAX_PACKET_SIZE ;   EP0_PACKET_SIZE
-               .DB 0x51, 0x04        ; idVendor Texas Instruments
-               .DB 0x15, 0x47        ; idProduct CC1111
-               .DB 0x01, 0x00        ; bcdDevice             (change to hardware version)
-               .DB 0x01              ; iManufacturer
-               .DB 0x02              ; iProduct
-               .DB 0x03              ; iSerialNumber
-               .DB 0x01              ; bNumConfigurations
-0002$:     ; Configuration descriptor
-               .DB 0003$ - 0002$     ; bLength
-               .DB USB_DESC_CONFIG   ; bDescriptorType
-               .DB 0006$ - 0002$     ; 
-               .DB 00
-               .DB 0x01              ; NumInterfaces
-               .DB 0x01              ; bConfigurationValue  - should be nonzero
-               .DB 0x00              ; iConfiguration
-               .DB 0x80              ; bmAttributes
-               .DB 0xfa              ; MaxPower
-0003$: ; Interface descriptor
-               .DB 0004$ - 0003$           ; bLength
-               .DB USB_DESC_INTERFACE      ; bDescriptorType
-               .DB 0x00                    ; bInterfaceNumber
-               .DB 0x00                    ; bAlternateSetting
-               .DB 0x02                    ; bNumEndpoints
-               .DB 0xff                    ; bInterfaceClass
-               .DB 0xff                    ; bInterfaceSubClass
-               .DB 0x01                    ; bInterfaceProcotol
-               .DB 0x00                    ; iInterface
-0004$:  ; Endpoint descriptor (EP5 IN)
-               .DB 0005$ - 0004$           ; bLength
-               .DB USB_DESC_ENDPOINT       ; bDescriptorType
-               .DB 0x85                    ; bEndpointAddress
-               .DB 0x02                    ; bmAttributes - bits 0-1 Xfer Type (0=Ctrl, 1=Isoc, 2=Bulk, 3=Intrpt);      2-3 Isoc-SyncType (0=None, 1=FeedbackEndpoint, 2=Adaptive, 3=Synchronous);       4-5 Isoc-UsageType (0=Data, 1=Feedback, 2=Explicit)
-               .DB 0xf4, 0x01              ; wMaxPacketSize
-               .DB 0x01                    ; bInterval
-0005$:  ; Endpoint descriptor (EP5 OUT)
-               .DB 0006$ - 0005$           ; bLength
-               .DB USB_DESC_ENDPOINT       ; bDescriptorType
-               .DB 0x05                    ; bEndpointAddress
-               .DB 0x02                    ; bmAttributes
-               .DB 0x40, 0x00              ; wMaxPacketSize
-               .DB 0x01                    ; bInterval
-0006$:    ; Language ID
-               .DB 0007$ - 0006$           ; bLength
-               .DB USB_DESC_STRING         ; bDescriptorType
-               .DB 0x09                    ; US-EN
-               .DB 0x04
-0007$:    ; Manufacturer
-               .DB 0008$ - 0007$           ; bLength
-               .DB USB_DESC_STRING         ; bDescriptorType
-               .DB "a", 0
-               .DB "t", 0
-               .DB "l", 0
-               .DB "a", 0
-               .DB "s", 0
-               .DB " ", 0
-               .DB "i", 0
-               .DB "n", 0
-               .DB "s", 0
-               .DB "t", 0
-               .DB "r", 0
-               .DB "u", 0
-               .DB "m", 0
-               .DB "e", 0
-               .DB "n", 0
-               .DB "t", 0
-               .DB "s", 0
-0008$:    ; Product
-               .DB 0009$ - 0008$             ; bLength
-               .DB USB_DESC_STRING           ; bDescriptorType
-               .DB "C", 0
-               .DB "C", 0
-               .DB "1", 0
-               .DB "1", 0
-               .DB "1", 0
-               .DB "1", 0
-               .DB " ", 0
-               .DB "U", 0
-               .DB "S", 0
-               .DB "B", 0
-               .DB " ", 0
-               .DB "K", 0
-               .DB "i", 0
-               .DB "c", 0
-               .DB "k", 0
-               .DB "a", 0
-               .DB "s", 0
-               .DB "s", 0
-0009$:   ;; Serial number
-               .DB 0010$ - 0009$            ;; bLength
-               .DB USB_DESC_STRING          ;; bDescriptorType
-               .DB "0", 0
-               .DB "0", 0
-               .DB "1", 0
-0010$:
-               .DB  0
-               .DB  0xff
-__endasm;
+    __asm
+        0001$:    ; Device descriptor
+        .DB 0002$ - 0001$     ; bLength 
+        .DB USB_DESC_DEVICE   ; bDescriptorType
+        .DB 0x00, 0x02        ; bcdUSB
+        .DB 0x02              ; bDeviceClass i
+        .DB 0x00              ; bDeviceSubClass
+        .DB 0x00              ; bDeviceProtocol
+        .DB EP0_MAX_PACKET_SIZE ;   EP0_PACKET_SIZE
+        .DB 0x51, 0x04        ; idVendor Texas Instruments
+        .DB 0x15, 0x47        ; idProduct CC1111
+        .DB 0x01, 0x00        ; bcdDevice             (change to hardware version)
+        .DB 0x01              ; iManufacturer
+        .DB 0x02              ; iProduct
+        .DB 0x03              ; iSerialNumber
+        .DB 0x01              ; bNumConfigurations
+        0002$:     ; Configuration descriptor
+        .DB 0003$ - 0002$     ; bLength
+        .DB USB_DESC_CONFIG   ; bDescriptorType
+        .DB 0006$ - 0002$     ; 
+    .DB 00
+        .DB 0x01              ; NumInterfaces
+        .DB 0x01              ; bConfigurationValue  - should be nonzero
+        .DB 0x00              ; iConfiguration
+        .DB 0x80              ; bmAttributes
+        .DB 0xfa              ; MaxPower
+        0003$: ; Interface descriptor
+        .DB 0004$ - 0003$           ; bLength
+        .DB USB_DESC_INTERFACE      ; bDescriptorType
+        .DB 0x00                    ; bInterfaceNumber
+        .DB 0x00                    ; bAlternateSetting
+        .DB 0x02                    ; bNumEndpoints
+        .DB 0xff                    ; bInterfaceClass
+        .DB 0xff                    ; bInterfaceSubClass
+        .DB 0x01                    ; bInterfaceProcotol
+        .DB 0x00                    ; iInterface
+        0004$:  ; Endpoint descriptor (EP5 IN)
+        .DB 0005$ - 0004$           ; bLength
+        .DB USB_DESC_ENDPOINT       ; bDescriptorType
+        .DB 0x85                    ; bEndpointAddress
+        .DB 0x02                    ; bmAttributes - bits 0-1 Xfer Type (0=Ctrl, 1=Isoc, 2=Bulk, 3=Intrpt);      2-3 Isoc-SyncType (0=None, 1=FeedbackEndpoint, 2=Adaptive, 3=Synchronous);       4-5 Isoc-UsageType (0=Data, 1=Feedback, 2=Explicit)
+        .DB 0xf4, 0x01              ; wMaxPacketSize
+        .DB 0x01                    ; bInterval
+        0005$:  ; Endpoint descriptor (EP5 OUT)
+        .DB 0006$ - 0005$           ; bLength
+        .DB USB_DESC_ENDPOINT       ; bDescriptorType
+        .DB 0x05                    ; bEndpointAddress
+        .DB 0x02                    ; bmAttributes
+        .DB 0x40, 0x00              ; wMaxPacketSize
+        .DB 0x01                    ; bInterval
+        0006$:    ; Language ID
+        .DB 0007$ - 0006$           ; bLength
+        .DB USB_DESC_STRING         ; bDescriptorType
+        .DB 0x09                    ; US-EN
+        .DB 0x04
+        0007$:    ; Manufacturer
+        .DB 0008$ - 0007$           ; bLength
+        .DB USB_DESC_STRING         ; bDescriptorType
+        .DB "a", 0
+        .DB "t", 0
+        .DB "l", 0
+        .DB "a", 0
+        .DB "s", 0
+        .DB " ", 0
+        .DB "i", 0
+        .DB "n", 0
+        .DB "s", 0
+        .DB "t", 0
+        .DB "r", 0
+        .DB "u", 0
+        .DB "m", 0
+        .DB "e", 0
+        .DB "n", 0
+        .DB "t", 0
+        .DB "s", 0
+        0008$:    ; Product
+        .DB 0009$ - 0008$             ; bLength
+        .DB USB_DESC_STRING           ; bDescriptorType
+        .DB "C", 0
+        .DB "C", 0
+        .DB "1", 0
+        .DB "1", 0
+        .DB "1", 0
+        .DB "1", 0
+        .DB " ", 0
+        .DB "U", 0
+        .DB "S", 0
+        .DB "B", 0
+        .DB " ", 0
+        .DB "K", 0
+        .DB "i", 0
+        .DB "c", 0
+        .DB "k", 0
+        .DB "a", 0
+        .DB "s", 0
+        .DB "s", 0
+        0009$:   ;; Serial number
+        .DB 0010$ - 0009$            ;; bLength
+        .DB USB_DESC_STRING          ;; bDescriptorType
+        .DB "0", 0
+        .DB "0", 0
+        .DB "1", 0
+        0010$:
+        .DB  0
+        .DB  0xff
+        __endasm;
 }
 
 

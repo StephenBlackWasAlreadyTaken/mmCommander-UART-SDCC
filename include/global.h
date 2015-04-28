@@ -6,7 +6,7 @@
 
 #define SLEEPTIMER  1200
 #define RADIO_EU 1
-    
+
 #define nop() __asm nop __endasm;
 
 // used for debugging and tracing execution.  see client's ".getDebugCodes()"
@@ -27,7 +27,7 @@ extern __xdata u8 lastCode[2];
     #define LED_RED   P2_3
     #define LED_GREEN P2_4
     #define SLEEPTIMER  1100
-    
+
 #elif defined DONSDONGLES
     // CC1111 USB Dongle with breakout debugging pins (EMK?) - 24mhz
     #define LED_RED   P1_1

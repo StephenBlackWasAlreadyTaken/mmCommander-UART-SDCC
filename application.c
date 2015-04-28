@@ -1,7 +1,7 @@
 #include "cc1111rf.h"
 #include "global.h"
-
 #include <string.h>
+#include "cc1111uart.c"
 
 #ifdef VIRTUAL_COM
 #include "cc1111.h"
@@ -16,7 +16,7 @@
 #define TAG_STATUS  0x03 /* Value is the status value want to know, for example RSSI */
 #define TAG_REG     0x04 /* Register values, value as register=value */
 
-#define TLV_MAX_DATA 50    
+#define TLV_MAX_DATA 50
 
 typedef struct
 {
@@ -377,6 +377,7 @@ void initBoard(void)
 {
     clock_init();
     io_init();
+    uartInit(9800);
 }
 
 void main (void)

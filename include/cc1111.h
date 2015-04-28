@@ -8,9 +8,13 @@
 #define u16 unsigned int
 #define u32 unsigned long
 #define uint8 unsigned char
+#define uint8_t unsigned char
 #define uint16 unsigned int
-#define uint32 unsigned int
+#define uint16_t unsigned int
+#define uint32 unsigned long
+#define uchar unsigned char
 #define xdata __xdata
+#define _PRAGMA(x) _Pragma(#x)
 #define interrupt __interrupt
 
 //uint8 addr;               // temporarily store the incoming address until *after* the STATUS stage of the transaction... then assign the address.
@@ -349,7 +353,7 @@ typedef struct DMA_DESC_S {
 #define ETXTBSY     26  * Text file busy /
 #define EFBIG       27  * File too large /
 #define ENOSPC      28  * No space left on device /
-#define ESPIPE      29  * Illegal seek /
+#define ESPIPE      29 intinterrupttlegal seek /
 #define EROFS       30  * Read-only file system /
 #define EMLINK      31  * Too many links /
 #define EPIPE       32  * Broken pipe /
