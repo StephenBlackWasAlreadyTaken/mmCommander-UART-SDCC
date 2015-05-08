@@ -8,6 +8,7 @@
 /*************************************************************************************************
  * Application Code - these first few functions are what should get overwritten for your app     *
  ************************************************************************************************/
+uint8 __xdata euroRadio = 0; // Set to 1 for european medtornic devices
 
 unsigned char __xdata incomingUartPayload[SIZE_OF_UART_RX_BUFFER];
 uint8 incomingUartPayloadIdentifier= 0;    //transmission[0]
@@ -255,14 +256,13 @@ void initBoard(void) {
 }
 
 void main (void) {
-    u8 uiRadioEu = 0;
     initBoard();
     initUSB();
 
 #ifdef RADIO_EU
     uiRadioEu = 1;
 #endif
-    init_RF(uiRadioEu,NORMAL);
+    init_RF(euroRadio, NORMAL);
     EA = 1;
     appMainInit();
     while (1) {

@@ -22,8 +22,7 @@ volatile __xdata u8 bRepeatMode = 0;
 /*************************************************************************************************
  * RF init stuff                                                                                 *
  ************************************************************************************************/
-void init_RF(u8 bEuRadio, register_e rRegisterType)
-{
+void init_RF(u8 bEuRadio, register_e rRegisterType) {
     /* Init DMA channel */
     DMA0CFGH = ((u16)(&rfDMA))>>8;
     DMA0CFGL = ((u16)(&rfDMA))&0xff;
@@ -35,82 +34,62 @@ void init_RF(u8 bEuRadio, register_e rRegisterType)
     IOCFG2      = 0x00;
     IOCFG1      = 0x00;
     IOCFG0      = 0x00;
-    SYNC1       = 0x0c;
-    SYNC0       = 0x4e;
-    PKTLEN      = 0xff;
-    if(rRegisterType == RECV)
-    {
-        PKTCTRL1    = 0x40;
+    //
+    //mmCommander RF settings
+    SYNC1 = 0xFF;
+    SYNC0 = 0x00;
+    PKTLEN = 0xFF;
+    PKTCTRL1 = 0x00;
+    PKTCTRL0 = 0x00;
+    ADDR = 0x00;
+    CHANNR = 0x00;
+    FSCTRL1 = 0x06;
+    FSCTRL0 = 0x00;
+    /* If EU change frequency */
+    if(!bEuRadio) {
+        FREQ2 = 0x24;
+        FREQ1 = 0x2E;
+        FREQ0 = 0x38;
+    } else {
+        FREQ2 = 0x26;
+        FREQ1 = 0x30;
+        FREQ0 = 0x00;
     }
-    else
-    {
-        PKTCTRL1    = 0x00;
-    }
-    PKTCTRL0    = 0x05;
-    ADDR        = 0x00;
-    CHANNR      = 0x00;
-    FSCTRL1     = 0x08;
-    FSCTRL0     = 0x00;
-    FREQ2       = 0x24;
-    FREQ1       = 0x2d;
-    FREQ0       = 0xdd;
-    MDMCFG4     = 0xca;
-    MDMCFG3     = 0xa3;
-    MDMCFG2     = 0x93;
-    MDMCFG1     = 0x23;
-    MDMCFG0     = 0x11;
-    DEVIATN     = 0x36;
-    MCSM2       = 0x07;
-    if(rRegisterType == RECV)
-    {
-        MCSM1       = 0x3C;
-    }
-    else
-    {
-        MCSM1       = 0x30;
-    }
-    MCSM0       = 0x18;
-    FOCCFG      = 0x16;
-    BSCFG       = 0x6c;
-    AGCCTRL2    = 0x43;
-    AGCCTRL1    = 0x40;
-    AGCCTRL0    = 0x91;
-    FREND1      = 0x56;
-    FREND0      = 0x10;
-    FSCAL3      = 0xe9;
-    FSCAL2      = 0x2a;
-    FSCAL1      = 0x00;
-    FSCAL0      = 0x1f;
-    if(rRegisterType == RECV)
-    {
-        TEST2       = 0x81;
-        TEST1       = 0x35;
-    }
-    else
-    {
-        TEST2       = 0x88;
-        TEST1       = 0x31;
-    }
-    TEST0       = 0x09;
-    PA_TABLE0   = 0x50;
-
-    /* If not EU change frequency */
-    if(!bEuRadio)
-    {
-        FSCTRL1 = 0x0c;
-        FREQ2 = 0x25;
-        FREQ1 = 0x95;
-        FREQ0 = 0x55;
-        FREND1 = 0xb6;
-        FREND0 = 0x10;
-        FSCAL3 = 0xea;
-        FSCAL2 = 0x2a;
-        FSCAL1 = 0x00;
-        FSCAL0 = 0x1f;
-    }
+    MDMCFG4 = 0x59;
+    MDMCFG3 = 0x66;
+    MDMCFG2 = 0x33;
+    MDMCFG1 = 0x62;
+    MDMCFG0 = 0x1A;
+    DEVIATN = 0x13;
+    MCSM2 = 0x07;
+    MCSM1 = 0x30;
+    MCSM0 = 0x18;
+    FOCCFG = 0x17;
+    BSCFG = 0x6C;
+    AGCCTRL2 = 0x03;
+    AGCCTRL1 = 0x40;
+    AGCCTRL0 = 0x91;
+    FREND1 = 0x56;
+    FREND0 = 0x12;
+    FSCAL3 = 0xE9;
+    FSCAL2 = 0x2A;
+    FSCAL1 = 0x00;
+    FSCAL0 = 0x1F;
+    TEST2 = 0x88;
+    TEST1 = 0x31;
+    TEST0 = 0x09;
+    PA_TABLE7 = 0x00;
+    PA_TABLE6 = 0x00;
+    PA_TABLE5 = 0x00;
+    PA_TABLE4 = 0x00;
+    PA_TABLE3 = 0x00;
+    PA_TABLE2 = 0x52;
+    PA_TABLE1 = 0x00;
+    PA_TABLE0 = 0x00;
+    RFTXRXIE = 0;
 
     /* Setup interrupts */
-    RFTXRXIE = 1;
+    /*RFTXRXIE = 1; // TODO: should this be here? */
     RFIM = 0xd1;
     RFIF = 0;
     rfif = 0;
