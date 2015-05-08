@@ -4,7 +4,7 @@
 #include "cc1111.h"
 
 #define DMA_CFG_SIZE 8
-#define BUFFER_SIZE 65
+#define BUFFER_SIZE 256
 #define BUFFER_AMOUNT 2
 
 #define RSSI_TIMEOUT_US 1500
@@ -44,9 +44,9 @@
 typedef enum{NORMAL,RECV,XMIT} register_e;
 
 /* Rx buffers */
-extern volatile __xdata u8 rfRxCurrentBuffer;
+extern volatile __xdata u16 rfRxCurrentBuffer;
 extern volatile __xdata u8 rfrxbuf[BUFFER_AMOUNT][BUFFER_SIZE];
-extern volatile __xdata u8 rfRxCounter[BUFFER_AMOUNT];
+extern volatile __xdata u16 rfRxCounter[BUFFER_AMOUNT];
 extern volatile __xdata u8 rfRxProcessed[BUFFER_AMOUNT];
 /* Tx buffers */
 extern volatile __xdata u8 rftxbuf[BUFFER_SIZE];

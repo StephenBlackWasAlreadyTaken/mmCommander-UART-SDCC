@@ -9,8 +9,8 @@
 #define SIZE_OF_UART_RX_BUFFER 256
 #define SIZE_OF_UART_TX_BUFFER 256
 
-unsigned short __xdata uartRxBuffer[SIZE_OF_UART_RX_BUFFER];
-unsigned short __xdata uartTxBuffer[SIZE_OF_UART_TX_BUFFER];
+unsigned char __xdata uartRxBuffer[SIZE_OF_UART_RX_BUFFER];
+unsigned char __xdata uartTxBuffer[SIZE_OF_UART_TX_BUFFER];
 unsigned short __xdata uartRxIndex, uartTxIndex;
 unsigned short __xdata uartRxInterruptIndex, uartTxInterruptIndex;
 
@@ -346,7 +346,7 @@ uint8 uartTxPendingBytes() {
 }
 
 void uartInit(uint8_t baudrate) {
-    setBaudForClockRate(24, baudrate); //TODO: Find the actual clockrate!!
+    setBaudForClockRate(26, baudrate); //TODO: Find the actual clockrate!!
     uartInitProtocol(&defaultUartProtConfig);
     uartStartRxForIsr(defaultUartProtConfig.uartNum);
 }

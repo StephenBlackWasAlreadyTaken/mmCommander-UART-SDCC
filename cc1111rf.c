@@ -4,9 +4,9 @@
 #include <string.h>
 
 /* Rx buffers */
-volatile __xdata u8 rfRxCurrentBuffer;
+volatile __xdata u16 rfRxCurrentBuffer;
 volatile __xdata u8 rfrxbuf[BUFFER_AMOUNT][BUFFER_SIZE];
-volatile __xdata u8 rfRxCounter[BUFFER_AMOUNT];
+volatile __xdata u16 rfRxCounter[BUFFER_AMOUNT];
 volatile __xdata u8 rfRxProcessed[BUFFER_AMOUNT];
 volatile __xdata u8 bRxDMA;
 /* Tx buffers */
@@ -110,7 +110,7 @@ void init_RF(u8 bEuRadio, register_e rRegisterType)
     }
 
     /* Setup interrupts */
-    RFTXRXIE = 1;                   // FIXME: should this be something that is enabled/disabled by usb?
+    RFTXRXIE = 1;
     RFIM = 0xd1;
     RFIF = 0;
     rfif = 0;
@@ -160,8 +160,7 @@ int waitRSSI()
 }
 
 /* Functions contains attempt for DMA but not working yet, please leave bDma 0 */
-u8 transmit(__xdata u8* buf, u16 len, u8 bDma)
-{
+u8 transmit(__xdata u8* buf, u16 len, u8 bDma) {
     u8 uiRSSITries = 5;
 
     /* Put radio into idle state */

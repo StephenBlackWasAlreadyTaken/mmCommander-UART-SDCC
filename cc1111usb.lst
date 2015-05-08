@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
                                       3 ; Version 3.4.0 #8981 (Oct 10 2014) (Mac OS X x86_64)
-                                      4 ; This file was generated Tue Apr 21 08:10:37 2015
+                                      4 ; This file was generated Thu May  7 19:29:13 2015
                                       5 ;--------------------------------------------------------
                                       6 	.module cc1111usb
                                       7 	.optsdcc -mmcs51 --model-small
@@ -3924,7 +3924,7 @@
                                    3924 ;	-----------------------------------------
       000F07                       3925 _USBDESCBEGIN:
                                    3926 ;	cc1111usb.c:1138: __endasm;
-      000F07                       3927 	0001$:
+      000F07                       3927 	        0001$:
                                    3928 ; Device descriptor
       000F07 12                    3929 	.DB 0002$ - 0001$ ; bLength
       000F08 01                    3930 	.DB 0x01 ; bDescriptorType
@@ -3940,7 +3940,7 @@
       000F16 02                    3940 	.DB 0x02 ; iProduct
       000F17 03                    3941 	.DB 0x03 ; iSerialNumber
       000F18 01                    3942 	.DB 0x01 ; bNumConfigurations
-      000F19                       3943 	0002$:
+      000F19                       3943 	        0002$:
                                    3944 ; Configuration descriptor
       000F19 09                    3945 	.DB 0003$ - 0002$ ; bLength
       000F1A 02                    3946 	.DB 0x02 ; bDescriptorType
@@ -3951,7 +3951,7 @@
       000F1F 00                    3951 	.DB 0x00 ; iConfiguration
       000F20 80                    3952 	.DB 0x80 ; bmAttributes
       000F21 FA                    3953 	.DB 0xfa ; MaxPower
-      000F22                       3954 	0003$:
+      000F22                       3954 	        0003$:
                                    3955 ; Interface descriptor
       000F22 09                    3956 	.DB 0004$ - 0003$ ; bLength
       000F23 04                    3957 	.DB 0x04 ; bDescriptorType
@@ -3962,7 +3962,7 @@
       000F28 FF                    3962 	.DB 0xff ; bInterfaceSubClass
       000F29 01                    3963 	.DB 0x01 ; bInterfaceProcotol
       000F2A 00                    3964 	.DB 0x00 ; iInterface
-      000F2B                       3965 	0004$:
+      000F2B                       3965 	        0004$:
                                    3966 ; Endpoint descriptor (EP5 IN)
       000F2B 07                    3967 	.DB 0005$ - 0004$ ; bLength
       000F2C 05                    3968 	.DB 0x05 ; bDescriptorType
@@ -3970,7 +3970,7 @@
       000F2E 02                    3970 	.DB 0x02 ; bmAttributes - bits 0-1 Xfer Type (0=Ctrl, 1=Isoc, 2=Bulk, 3=Intrpt); 2-3 Isoc-SyncType (0=None, 1=FeedbackEndpoint, 2=Adaptive, 3=Synchronous); 4-5 Isoc-UsageType (0=Data, 1=Feedback, 2=Explicit)
       000F2F F4 01                 3971 	.DB 0xf4, 0x01 ; wMaxPacketSize
       000F31 01                    3972 	.DB 0x01 ; bInterval
-      000F32                       3973 	0005$:
+      000F32                       3973 	        0005$:
                                    3974 ; Endpoint descriptor (EP5 OUT)
       000F32 07                    3975 	.DB 0006$ - 0005$ ; bLength
       000F33 05                    3976 	.DB 0x05 ; bDescriptorType
@@ -3978,13 +3978,13 @@
       000F35 02                    3978 	.DB 0x02 ; bmAttributes
       000F36 40 00                 3979 	.DB 0x40, 0x00 ; wMaxPacketSize
       000F38 01                    3980 	.DB 0x01 ; bInterval
-      000F39                       3981 	0006$:
+      000F39                       3981 	        0006$:
                                    3982 ; Language ID
       000F39 04                    3983 	.DB 0007$ - 0006$ ; bLength
       000F3A 03                    3984 	.DB 0x03 ; bDescriptorType
       000F3B 09                    3985 	.DB 0x09 ; US-EN
       000F3C 04                    3986 	.DB 0x04
-      000F3D                       3987 	0007$:
+      000F3D                       3987 	        0007$:
                                    3988 ; Manufacturer
       000F3D 24                    3989 	.DB 0008$ - 0007$ ; bLength
       000F3E 03                    3990 	.DB 0x03 ; bDescriptorType
@@ -4005,7 +4005,7 @@
       000F5B 22 00                 4005 	.DB "n", 0
       000F5D 22 00                 4006 	.DB "t", 0
       000F5F 22 00                 4007 	.DB "s", 0
-      000F61                       4008 	0008$:
+      000F61                       4008 	        0008$:
                                    4009 ; Product
       000F61 26                    4010 	.DB 0009$ - 0008$ ; bLength
       000F62 03                    4011 	.DB 0x03 ; bDescriptorType
@@ -4027,14 +4027,14 @@
       000F81 22 00                 4027 	.DB "a", 0
       000F83 22 00                 4028 	.DB "s", 0
       000F85 22 00                 4029 	.DB "s", 0
-      000F87                       4030 	0009$:
+      000F87                       4030 	        0009$:
                                    4031 ;; Serial number
       000F87 08                    4032 	.DB 0010$ - 0009$ ;; bLength
       000F88 03                    4033 	.DB 0x03 ;; bDescriptorType
       000F89 22 00                 4034 	.DB "0", 0
       000F8B 22 00                 4035 	.DB "0", 0
       000F8D 22 00                 4036 	.DB "1", 0
-      000F8F                       4037 	0010$:
+      000F8F                       4037 	        0010$:
       000F8F 00                    4038 	.DB 0
       000F90 FF                    4039 	.DB 0xff
       000F91 22               [24] 4040 	ret
