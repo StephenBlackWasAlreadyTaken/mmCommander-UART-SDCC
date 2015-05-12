@@ -260,7 +260,7 @@ void main (void) {
     initUSB();
 
 #ifdef RADIO_EU
-    uiRadioEu = 1;
+    euroRadio = 1;
 #endif
     init_RF(euroRadio, NORMAL);
     EA = 1;
