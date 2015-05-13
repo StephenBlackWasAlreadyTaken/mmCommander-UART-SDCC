@@ -137,6 +137,7 @@ void uartSetOrder(uint8 order) {
 }
 
 void uartInitProtocol(UART_PROT_CONFIG* uartProtConfig) {
+    uartMapPort(0, uartProtConfig->uartNum);
     if (uartProtConfig->uartNum == 0) {
         U0CSR |= 0x80;
         U0UCR = (U0UCR&~0x01) | uartProtConfig->START;

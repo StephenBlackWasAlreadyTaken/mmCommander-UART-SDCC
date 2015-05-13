@@ -1015,7 +1015,7 @@
                                    1015 ;	-----------------------------------------
                                    1016 ;	 function sleepMillis
                                    1017 ;	-----------------------------------------
-      00154E                       1018 _sleepMillis:
+      001574                       1018 _sleepMillis:
                            000007  1019 	ar7 = 0x07
                            000006  1020 	ar6 = 0x06
                            000005  1021 	ar5 = 0x05
@@ -1024,36 +1024,36 @@
                            000002  1024 	ar2 = 0x02
                            000001  1025 	ar1 = 0x01
                            000000  1026 	ar0 = 0x00
-      00154E AE 82            [24] 1027 	mov	r6,dpl
-      001550 AF 83            [24] 1028 	mov	r7,dph
+      001574 AE 82            [24] 1027 	mov	r6,dpl
+      001576 AF 83            [24] 1028 	mov	r7,dph
                                    1029 ;	global.c:10: while (--ms > 0) 
-      001552                       1030 00102$:
-      001552 1E               [12] 1031 	dec	r6
-      001553 BE FF 01         [24] 1032 	cjne	r6,#0xFF,00124$
-      001556 1F               [12] 1033 	dec	r7
-      001557                       1034 00124$:
-      001557 C3               [12] 1035 	clr	c
-      001558 E4               [12] 1036 	clr	a
-      001559 9E               [12] 1037 	subb	a,r6
-      00155A 74 80            [12] 1038 	mov	a,#(0x00 ^ 0x80)
-      00155C 8F F0            [24] 1039 	mov	b,r7
-      00155E 63 F0 80         [24] 1040 	xrl	b,#0x80
-      001561 95 F0            [12] 1041 	subb	a,b
-      001563 50 0F            [24] 1042 	jnc	00108$
+      001578                       1030 00102$:
+      001578 1E               [12] 1031 	dec	r6
+      001579 BE FF 01         [24] 1032 	cjne	r6,#0xFF,00124$
+      00157C 1F               [12] 1033 	dec	r7
+      00157D                       1034 00124$:
+      00157D C3               [12] 1035 	clr	c
+      00157E E4               [12] 1036 	clr	a
+      00157F 9E               [12] 1037 	subb	a,r6
+      001580 74 80            [12] 1038 	mov	a,#(0x00 ^ 0x80)
+      001582 8F F0            [24] 1039 	mov	b,r7
+      001584 63 F0 80         [24] 1040 	xrl	b,#0x80
+      001587 95 F0            [12] 1041 	subb	a,b
+      001589 50 0F            [24] 1042 	jnc	00108$
                                    1043 ;	global.c:12: for (j=0; j<SLEEPTIMER;j++); // about 1 millisecond
-      001565 7C B0            [12] 1044 	mov	r4,#0xB0
-      001567 7D 04            [12] 1045 	mov	r5,#0x04
-      001569                       1046 00107$:
-      001569 1C               [12] 1047 	dec	r4
-      00156A BC FF 01         [24] 1048 	cjne	r4,#0xFF,00126$
-      00156D 1D               [12] 1049 	dec	r5
-      00156E                       1050 00126$:
-      00156E EC               [12] 1051 	mov	a,r4
-      00156F 4D               [12] 1052 	orl	a,r5
-      001570 70 F7            [24] 1053 	jnz	00107$
-      001572 80 DE            [24] 1054 	sjmp	00102$
-      001574                       1055 00108$:
-      001574 22               [24] 1056 	ret
+      00158B 7C B0            [12] 1044 	mov	r4,#0xB0
+      00158D 7D 04            [12] 1045 	mov	r5,#0x04
+      00158F                       1046 00107$:
+      00158F 1C               [12] 1047 	dec	r4
+      001590 BC FF 01         [24] 1048 	cjne	r4,#0xFF,00126$
+      001593 1D               [12] 1049 	dec	r5
+      001594                       1050 00126$:
+      001594 EC               [12] 1051 	mov	a,r4
+      001595 4D               [12] 1052 	orl	a,r5
+      001596 70 F7            [24] 1053 	jnz	00107$
+      001598 80 DE            [24] 1054 	sjmp	00102$
+      00159A                       1055 00108$:
+      00159A 22               [24] 1056 	ret
                                    1057 ;------------------------------------------------------------
                                    1058 ;Allocation info for local variables in function 'sleepMicros'
                                    1059 ;------------------------------------------------------------
@@ -1063,24 +1063,24 @@
                                    1063 ;	-----------------------------------------
                                    1064 ;	 function sleepMicros
                                    1065 ;	-----------------------------------------
-      001575                       1066 _sleepMicros:
-      001575 AE 82            [24] 1067 	mov	r6,dpl
-      001577 AF 83            [24] 1068 	mov	r7,dph
+      00159B                       1066 _sleepMicros:
+      00159B AE 82            [24] 1067 	mov	r6,dpl
+      00159D AF 83            [24] 1068 	mov	r7,dph
                                    1069 ;	global.c:19: while (--us > 0) ;
-      001579                       1070 00101$:
-      001579 1E               [12] 1071 	dec	r6
-      00157A BE FF 01         [24] 1072 	cjne	r6,#0xFF,00110$
-      00157D 1F               [12] 1073 	dec	r7
-      00157E                       1074 00110$:
-      00157E C3               [12] 1075 	clr	c
-      00157F E4               [12] 1076 	clr	a
-      001580 9E               [12] 1077 	subb	a,r6
-      001581 74 80            [12] 1078 	mov	a,#(0x00 ^ 0x80)
-      001583 8F F0            [24] 1079 	mov	b,r7
-      001585 63 F0 80         [24] 1080 	xrl	b,#0x80
-      001588 95 F0            [12] 1081 	subb	a,b
-      00158A 40 ED            [24] 1082 	jc	00101$
-      00158C 22               [24] 1083 	ret
+      00159F                       1070 00101$:
+      00159F 1E               [12] 1071 	dec	r6
+      0015A0 BE FF 01         [24] 1072 	cjne	r6,#0xFF,00110$
+      0015A3 1F               [12] 1073 	dec	r7
+      0015A4                       1074 00110$:
+      0015A4 C3               [12] 1075 	clr	c
+      0015A5 E4               [12] 1076 	clr	a
+      0015A6 9E               [12] 1077 	subb	a,r6
+      0015A7 74 80            [12] 1078 	mov	a,#(0x00 ^ 0x80)
+      0015A9 8F F0            [24] 1079 	mov	b,r7
+      0015AB 63 F0 80         [24] 1080 	xrl	b,#0x80
+      0015AE 95 F0            [12] 1081 	subb	a,b
+      0015B0 40 ED            [24] 1082 	jc	00101$
+      0015B2 22               [24] 1083 	ret
                                    1084 ;------------------------------------------------------------
                                    1085 ;Allocation info for local variables in function 'blink_binary_baby_lsb'
                                    1086 ;------------------------------------------------------------
@@ -1091,96 +1091,96 @@
                                    1091 ;	-----------------------------------------
                                    1092 ;	 function blink_binary_baby_lsb
                                    1093 ;	-----------------------------------------
-      00158D                       1094 _blink_binary_baby_lsb:
-      00158D AE 82            [24] 1095 	mov	r6,dpl
-      00158F AF 83            [24] 1096 	mov	r7,dph
+      0015B3                       1094 _blink_binary_baby_lsb:
+      0015B3 AE 82            [24] 1095 	mov	r6,dpl
+      0015B5 AF 83            [24] 1096 	mov	r7,dph
                                    1097 ;	global.c:34: EA=0;
-      001591 C2 AF            [12] 1098 	clr	_EA
+      0015B7 C2 AF            [12] 1098 	clr	_EA
                                    1099 ;	global.c:35: LED = 1;
-      001593 D2 90            [12] 1100 	setb	_P1_0
+      0015B9 D2 90            [12] 1100 	setb	_P1_0
                                    1101 ;	global.c:36: sleepMillis(1000);
-      001595 90 03 E8         [24] 1102 	mov	dptr,#0x03E8
-      001598 C0 07            [24] 1103 	push	ar7
-      00159A C0 06            [24] 1104 	push	ar6
-      00159C 12 15 4E         [24] 1105 	lcall	_sleepMillis
+      0015BB 90 03 E8         [24] 1102 	mov	dptr,#0x03E8
+      0015BE C0 07            [24] 1103 	push	ar7
+      0015C0 C0 06            [24] 1104 	push	ar6
+      0015C2 12 15 74         [24] 1105 	lcall	_sleepMillis
                                    1106 ;	global.c:37: LED = 0;
-      00159F C2 90            [12] 1107 	clr	_P1_0
+      0015C5 C2 90            [12] 1107 	clr	_P1_0
                                    1108 ;	global.c:38: sleepMillis(500);
-      0015A1 90 01 F4         [24] 1109 	mov	dptr,#0x01F4
-      0015A4 12 15 4E         [24] 1110 	lcall	_sleepMillis
-      0015A7 D0 06            [24] 1111 	pop	ar6
-      0015A9 D0 07            [24] 1112 	pop	ar7
+      0015C7 90 01 F4         [24] 1109 	mov	dptr,#0x01F4
+      0015CA 12 15 74         [24] 1110 	lcall	_sleepMillis
+      0015CD D0 06            [24] 1111 	pop	ar6
+      0015CF D0 07            [24] 1112 	pop	ar7
                                    1113 ;	global.c:39: bits -= 1;          // 16 bit numbers needs to start on bit 15, etc....
-      0015AB 15 1C            [12] 1114 	dec	_blink_binary_baby_lsb_PARM_2
-      0015AD AD 1C            [24] 1115 	mov	r5,_blink_binary_baby_lsb_PARM_2
-      0015AF                       1116 00106$:
+      0015D1 15 1C            [12] 1114 	dec	_blink_binary_baby_lsb_PARM_2
+      0015D3 AD 1C            [24] 1115 	mov	r5,_blink_binary_baby_lsb_PARM_2
+      0015D5                       1116 00106$:
                                    1117 ;	global.c:41: for (; bits>=0; bits--)
-      0015AF ED               [12] 1118 	mov	a,r5
-      0015B0 20 E7 54         [24] 1119 	jb	acc.7,00104$
+      0015D5 ED               [12] 1118 	mov	a,r5
+      0015D6 20 E7 54         [24] 1119 	jb	acc.7,00104$
                                    1120 ;	global.c:43: if (num & 1)
-      0015B3 EE               [12] 1121 	mov	a,r6
-      0015B4 30 E0 24         [24] 1122 	jnb	acc.0,00102$
+      0015D9 EE               [12] 1121 	mov	a,r6
+      0015DA 30 E0 24         [24] 1122 	jnb	acc.0,00102$
                                    1123 ;	global.c:45: sleepMillis(25);
-      0015B7 90 00 19         [24] 1124 	mov	dptr,#0x0019
-      0015BA C0 07            [24] 1125 	push	ar7
-      0015BC C0 06            [24] 1126 	push	ar6
-      0015BE C0 05            [24] 1127 	push	ar5
-      0015C0 12 15 4E         [24] 1128 	lcall	_sleepMillis
+      0015DD 90 00 19         [24] 1124 	mov	dptr,#0x0019
+      0015E0 C0 07            [24] 1125 	push	ar7
+      0015E2 C0 06            [24] 1126 	push	ar6
+      0015E4 C0 05            [24] 1127 	push	ar5
+      0015E6 12 15 74         [24] 1128 	lcall	_sleepMillis
                                    1129 ;	global.c:46: LED = 1;
-      0015C3 D2 90            [12] 1130 	setb	_P1_0
+      0015E9 D2 90            [12] 1130 	setb	_P1_0
                                    1131 ;	global.c:47: sleepMillis(550);
-      0015C5 90 02 26         [24] 1132 	mov	dptr,#0x0226
-      0015C8 12 15 4E         [24] 1133 	lcall	_sleepMillis
+      0015EB 90 02 26         [24] 1132 	mov	dptr,#0x0226
+      0015EE 12 15 74         [24] 1133 	lcall	_sleepMillis
                                    1134 ;	global.c:48: LED = 0;
-      0015CB C2 90            [12] 1135 	clr	_P1_0
+      0015F1 C2 90            [12] 1135 	clr	_P1_0
                                    1136 ;	global.c:49: sleepMillis(25);
-      0015CD 90 00 19         [24] 1137 	mov	dptr,#0x0019
-      0015D0 12 15 4E         [24] 1138 	lcall	_sleepMillis
-      0015D3 D0 05            [24] 1139 	pop	ar5
-      0015D5 D0 06            [24] 1140 	pop	ar6
-      0015D7 D0 07            [24] 1141 	pop	ar7
-      0015D9 80 22            [24] 1142 	sjmp	00103$
-      0015DB                       1143 00102$:
+      0015F3 90 00 19         [24] 1137 	mov	dptr,#0x0019
+      0015F6 12 15 74         [24] 1138 	lcall	_sleepMillis
+      0015F9 D0 05            [24] 1139 	pop	ar5
+      0015FB D0 06            [24] 1140 	pop	ar6
+      0015FD D0 07            [24] 1141 	pop	ar7
+      0015FF 80 22            [24] 1142 	sjmp	00103$
+      001601                       1143 00102$:
                                    1144 ;	global.c:53: sleepMillis(275);
-      0015DB 90 01 13         [24] 1145 	mov	dptr,#0x0113
-      0015DE C0 07            [24] 1146 	push	ar7
-      0015E0 C0 06            [24] 1147 	push	ar6
-      0015E2 C0 05            [24] 1148 	push	ar5
-      0015E4 12 15 4E         [24] 1149 	lcall	_sleepMillis
+      001601 90 01 13         [24] 1145 	mov	dptr,#0x0113
+      001604 C0 07            [24] 1146 	push	ar7
+      001606 C0 06            [24] 1147 	push	ar6
+      001608 C0 05            [24] 1148 	push	ar5
+      00160A 12 15 74         [24] 1149 	lcall	_sleepMillis
                                    1150 ;	global.c:54: LED = 1;
-      0015E7 D2 90            [12] 1151 	setb	_P1_0
+      00160D D2 90            [12] 1151 	setb	_P1_0
                                    1152 ;	global.c:55: sleepMillis(50);
-      0015E9 90 00 32         [24] 1153 	mov	dptr,#0x0032
-      0015EC 12 15 4E         [24] 1154 	lcall	_sleepMillis
+      00160F 90 00 32         [24] 1153 	mov	dptr,#0x0032
+      001612 12 15 74         [24] 1154 	lcall	_sleepMillis
                                    1155 ;	global.c:56: LED = 0;
-      0015EF C2 90            [12] 1156 	clr	_P1_0
+      001615 C2 90            [12] 1156 	clr	_P1_0
                                    1157 ;	global.c:57: sleepMillis(275);
-      0015F1 90 01 13         [24] 1158 	mov	dptr,#0x0113
-      0015F4 12 15 4E         [24] 1159 	lcall	_sleepMillis
-      0015F7 D0 05            [24] 1160 	pop	ar5
-      0015F9 D0 06            [24] 1161 	pop	ar6
-      0015FB D0 07            [24] 1162 	pop	ar7
-      0015FD                       1163 00103$:
+      001617 90 01 13         [24] 1158 	mov	dptr,#0x0113
+      00161A 12 15 74         [24] 1159 	lcall	_sleepMillis
+      00161D D0 05            [24] 1160 	pop	ar5
+      00161F D0 06            [24] 1161 	pop	ar6
+      001621 D0 07            [24] 1162 	pop	ar7
+      001623                       1163 00103$:
                                    1164 ;	global.c:59: num = num >> 1;
-      0015FD EF               [12] 1165 	mov	a,r7
-      0015FE C3               [12] 1166 	clr	c
-      0015FF 13               [12] 1167 	rrc	a
-      001600 CE               [12] 1168 	xch	a,r6
-      001601 13               [12] 1169 	rrc	a
-      001602 CE               [12] 1170 	xch	a,r6
-      001603 FF               [12] 1171 	mov	r7,a
+      001623 EF               [12] 1165 	mov	a,r7
+      001624 C3               [12] 1166 	clr	c
+      001625 13               [12] 1167 	rrc	a
+      001626 CE               [12] 1168 	xch	a,r6
+      001627 13               [12] 1169 	rrc	a
+      001628 CE               [12] 1170 	xch	a,r6
+      001629 FF               [12] 1171 	mov	r7,a
                                    1172 ;	global.c:41: for (; bits>=0; bits--)
-      001604 1D               [12] 1173 	dec	r5
-      001605 80 A8            [24] 1174 	sjmp	00106$
-      001607                       1175 00104$:
+      00162A 1D               [12] 1173 	dec	r5
+      00162B 80 A8            [24] 1174 	sjmp	00106$
+      00162D                       1175 00104$:
                                    1176 ;	global.c:61: LED = 0;
-      001607 C2 90            [12] 1177 	clr	_P1_0
+      00162D C2 90            [12] 1177 	clr	_P1_0
                                    1178 ;	global.c:62: sleepMillis(1000);
-      001609 90 03 E8         [24] 1179 	mov	dptr,#0x03E8
-      00160C 12 15 4E         [24] 1180 	lcall	_sleepMillis
+      00162F 90 03 E8         [24] 1179 	mov	dptr,#0x03E8
+      001632 12 15 74         [24] 1180 	lcall	_sleepMillis
                                    1181 ;	global.c:63: EA=1;
-      00160F D2 AF            [12] 1182 	setb	_EA
-      001611 22               [24] 1183 	ret
+      001635 D2 AF            [12] 1182 	setb	_EA
+      001637 22               [24] 1183 	ret
                                    1184 	.area CSEG    (CODE)
                                    1185 	.area CONST   (CODE)
                                    1186 	.area XINIT   (CODE)
