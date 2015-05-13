@@ -77,32 +77,32 @@ void setBaudForClockRate(uint8 clockrate, uint32 baudrate) {
 }
 
 typedef struct {
-    uint8_t uartNum : 1; // UART peripheral number (0 or 1)
+    uint8 uartNum : 1; // UART peripheral number (0 or 1)
     // Initialize UART protocol for desired UART (0 or 1)
-    uint8_t START : 0; // Start bit level (low/high)
+    uint8 START : 1; // Start bit level (low/high)
     // Start bit level = low => Idle level = high (U0UCR.START = 0)
     // Start bit level = high => Idle level = low (U0UCR.START = 1)
-    uint8_t STOP : 0; // Stop bit level (low/high)
+    uint8 STOP : 1; // Stop bit level (low/high)
     // Stop bit level = high (U0UCR.STOP = 1)
     // Stop bit level = low (U0UCR.STOP = 0)
-    uint8_t SPB : 0; // Stop bits (0 => 1, 1 => 2)
+    uint8 SPB : 1; // Stop bits (0 => 1, 1 => 2)
     // Number of stop bits = 1 (U0UCR.SPB = 0)
     // Number of stop bits = 2 (U0UCR.SPB = 1)
-    uint8_t PARITY : 0; // Parity control (enable/disable)
+    uint8 PARITY : 1; // Parity control (enable/disable)
     // Parity = disabled (U0UCR.PARITY = 0)
     // Parity = enabled (U0UCR.PARITY = 1)
-    uint8_t BIT9 : 0; // 9 bit enable (8bit / 9bit)
+    uint8 BIT9 : 1; // 9 bit enable (8bit / 9bit)
     // 9-bit data disable = 8 bits transfer (U0UCR.BIT9 = 0)
     // 9-bit data enable = 9 bits transfer (U0UCR.BIT9 = 1)
-    uint8_t D9 : 0; // 9th bit level or Parity type
+    uint8 D9 : 1; // 9th bit level or Parity type
     // Level of bit 9 = 0 (U0UCR.D9 = 0), used when U0UCR.BIT9 = 1
     // Level of bit 9 = 1 (U0UCR.D9 = 1), used when U0UCR.BIT9 = 1
     // Parity = Even (U0UCR.D9 = 0), used when U0UCR.PARITY = 1
     // Parity = Odd (U0UCR.D9 = 1), used when U0UCR.PARITY = 1
-    uint8_t FLOW : 0; // HW Flow Control (enable/disable)
+    uint8 FLOW : 1; // HW Flow Control (enable/disable)
     // Flow control = disabled (U0UCR.FLOW = 0)
     // Flow control = enabled (U0UCR.FLOW = 1)
-    uint8_t ORDER : 0; // Data bit order(LSB/MSB first)
+    uint8 ORDER : 1; // Data bit order(LSB/MSB first)
     // Bit order = MSB first (U0GCR.ORDER = 1)
     // Bit order = LSB first (U0GCR.ORDER = 0) => For PC/Hyperterminal
 } UART_PROT_CONFIG;

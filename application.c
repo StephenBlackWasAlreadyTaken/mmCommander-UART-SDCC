@@ -252,6 +252,15 @@ void clock_init(void) {
 void initBoard(void) {
     clock_init();
     io_init();
+    uartSetUartNum(0);
+    uartSetStart(0);
+    uartSetStop(0);
+    uartSetSbp(0);
+    uartSetParity(0);
+    uartSetBit9(0);
+    uartSetD9(0);
+    uartSetFlow(0);
+    uartSetOrder(0);
     uartInit(9800);
 }
 
